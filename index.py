@@ -22,12 +22,17 @@ class queryRequestHandler(tornado.web.RequestHandler):
         else:
             self.write(f"{num} is not an integer")
 
+class resourceRequestHandler(tornado.web.RequestHandler):
+    def get(self, studentName, courseID):
+        self.write(f"Welcome {studentName} to this course {courseID}")
+
 
 if __name__ == "__main__":
     app = tornado.web.Application([
         (r"/", basicRequestHandler),
         (r"/cars", carsRequestHander),
-        (r"/isEven", queryRequestHandler)
+        (r"/isEven", queryRequestHandler),
+        (r"/students/([a-z]+)/([0-9]+)", resourceRequestHandler)
     ])
 
     port = 3000
