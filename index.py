@@ -30,9 +30,16 @@ class resourceRequestHandler(tornado.web.RequestHandler):
 class carBrandsRequestHandler(tornado.web.RequestHandler):
     def get(self):
         fh = open("brands.txt", "r")
-        cars = fh.read().splitlines()
+        brand = fh.read().splitlines()
         fh.close()
-        self.write(json.dumps(cars))
+        self.write(json.dumps(brand))
+
+    def post(self):
+        brand = self.get_argument("brand")
+        fh = open("brands.txt", "a")
+        fh.write(f"{brand}\n")
+        fh.close()
+        self.write(json.dumps({"message": "Added successfuly!!"}))
 
 
 
