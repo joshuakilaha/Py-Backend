@@ -1,6 +1,6 @@
 import tornado.web
 import tornado.ioloop
-
+import json
 
 class basicRequestHandler(tornado.web.RequestHandler):
     def get(self):
@@ -23,8 +23,17 @@ class queryRequestHandler(tornado.web.RequestHandler):
             self.write(f"{num} is not an integer")
 
 class resourceRequestHandler(tornado.web.RequestHandler):
-    def get(self, studentName, courseID):
-        self.write(f"Welcome {studentName} to this course {courseID}")
+    def get(self, brandName, carId):
+        self.write(f"Welcome, your car name is {brandName} and the number {carId}")
+
+
+class carBrandsRequestHandler(tornado.web.RequestHandler):
+    def get(self):
+        fh = open("brands.txt", "r")
+        cars = fh.read().splitlines()
+        fh.close()
+        self.write(json.dumps(cars))
+
 
 
 if __name__ == "__main__":
@@ -32,7 +41,8 @@ if __name__ == "__main__":
         (r"/", basicRequestHandler),
         (r"/cars", carsRequestHander),
         (r"/isEven", queryRequestHandler),
-        (r"/students/([a-z]+)/([0-9]+)", resourceRequestHandler)
+        (r"/Brand/([a-z]+)/([0-9]+)", resourceRequestHandler),
+        (r"/Brands", carBrandsRequestHandler)
     ])
 
     port = 3000
